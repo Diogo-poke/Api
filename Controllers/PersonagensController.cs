@@ -4,6 +4,9 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using RpgApi.Data;
+using RpgApi.Models;
+using RpgApi.Models.Enuns;
+using Microsoft.EntityFrameworkCore;
 
 namespace RpgApi.Controllers
 {
@@ -17,42 +20,36 @@ namespace RpgApi.Controllers
         public PersonagensController(DataContext context)
         {
             
-        _context = context;
+            _context = context;
 
         }
 
        
        [HttpGet("{id}")] // Buscar pelo id
-
        public async Task<IActionResult> GetSingle(int id)
        {
             try
             {
-                Personagem p = await _context.TB_PERSONAGENS
-                .FirstOrDefaultAsync(pBusca => pBusca.id);
-
+                Personagem p = await _context.TB_PERSONAGENS.FirstOrDefaultAsync(pBusca => pBusca.Id == id);
                 return Ok(p);
             }
-            catch (System.Exception)
+            catch (System.Exception ex)
             {
                 return BadRequest(ex.Message);
                 
             }
-              
-
         }
 
-        [HttpGet("GetALL")] 
-      
+        [HttpGet("GetAll")]       
        public async Task<IActionResult> Get()
        {
           try
             {
-               List<Personagem> lista = await_context.TB_PERSONAGENS;
+               List<Personagem> lista = await _context.TB_PERSONAGENS.ToListAsync();
 
                return Ok(lista);
             }
-            catch (System.Exception)
+            catch (System.Exception ex)
             {
                 return BadRequest(ex.Message);
                 
@@ -61,7 +58,7 @@ namespace RpgApi.Controllers
        }
 
       
-      [HttpPost]
+     [HttpPost]
          
       public async Task<IActionResult> Add(Personagem novoPersonagem)
       {
@@ -74,10 +71,10 @@ namespace RpgApi.Controllers
              }
              await _context.TB_PERSONAGENS.AddAsync(novoPersonagem);
              await _context.SaveChangesAsync();
-             return OK(novoPersonagem.id)
+             return Ok(novoPersonagem.Id);
 
             }
-            catch (System.Exception)
+            catch (System.Exception ex)
             {
                return BadRequest(ex.Message);
                 
@@ -85,8 +82,8 @@ namespace RpgApi.Controllers
 
       }
 
-      [HttpPut]
-        public async Task<IActionResult> Update(Personagem nonvoPersonagem)
+      /*[HttpPut]
+        public async Task<IActionResult> Update(Personagem novoPersonagem)
         {
               try
             {
@@ -98,10 +95,10 @@ namespace RpgApi.Controllers
             _context.TB_PERSONAGENS.Update(novoPersonagem);
             int linhasAfetadas = await _context.SaveChangesAsync();
 
-             return OK(linhasAfetadas);
+             return Ok(linhasAfetadas);
 
             }
-            catch (System.Exception)
+            catch (System.Exception ex)
             {
                return BadRequest(ex.Message);
                 
@@ -115,23 +112,19 @@ namespace RpgApi.Controllers
 
          try
             {
-               Personagem pRemover = await _context.TB_PERSONAGENS.FirstOrDefaultAsync(p => p.id == id);
+               Personagem pRemover = await _context.TB_PERSONAGENS.FirstOrDefaultAsync(p => p.Id == id);
               _context.TB_PERSONAGENS.Remove(pRemover);
 
              int linhasAfetadas = await _context.SaveChangesAsync();
 
-             return OK(linhasAfetadas);
+             return Ok(linhasAfetadas);
             }
-
-            catch (System.Exception)
+            catch (System.Exception ex)
             {
                 return BadRequest(ex.Message);
                 
             }
-
-
-
-         }
+         }*/
 
 
     }
