@@ -3,8 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Api.Models;
+using RpgApi.Data;
+using RpgApi.Models;
+using RpgApi.Models.Enuns;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+
 namespace Api.Controllers
 {
     [ApiController]
@@ -23,13 +27,13 @@ namespace Api.Controllers
         
         private static List<Arma> Armas = new List<Arma>()
         {
-        new Arma() { Id = 1, Nome = "Adaga", Dano = 25}, 
-        new Arma() { Id = 2, Nome = "Cajado", Dano = 20},
-        new Arma() { Id = 3, Nome = "Espada", Dano = 15},
-        new Arma() { Id = 4, Nome = "Soco", Dano = 5},
-        new Arma() { Id = 5, Nome = "Chute", Dano = 5},
-        new Arma() { Id = 6, Nome = "Machado", Dano = 50},
-        new Arma() { Id = 7, Nome = "Arco", Dano = 10},    
+        new Arma() { Id = 1, Nome = "Adaga", Dano = 25} , 
+        new Arma() { Id = 2, Nome = "Cajado", Dano = 20} ,
+        new Arma() { Id = 3, Nome = "Espada", Dano = 15} ,
+        new Arma() { Id = 4, Nome = "Soco", Dano = 5} ,
+        new Arma() { Id = 5, Nome = "Chute", Dano = 5} ,
+        new Arma() { Id = 6, Nome = "Machado", Dano = 50} ,
+        new Arma() { Id = 7, Nome = "Arco", Dano = 10} ,    
         };
         
          [HttpGet("{id}")] // Buscar pelo id
@@ -67,7 +71,7 @@ namespace Api.Controllers
       
      [HttpPost]
          
-      public async Task<IActionResult> Add(Armas novaArma)
+      public async Task<IActionResult> Add(Arma novaArma)
       {
           try
             {
@@ -90,7 +94,7 @@ namespace Api.Controllers
       }
 
       [HttpPut]
-        public async Task<IActionResult> Update(Armas novaArma)
+        public async Task<IActionResult> Update(Arma novaArma)
         {
               try
             {
@@ -113,14 +117,14 @@ namespace Api.Controllers
          
         }
            
-          [HttpDelete] 
+          [HttpDelete("{id}")] 
             public async Task<IActionResult> Delete(int id)
          {
 
          try
             {
-               Armas aRemover = await _context.TB_PERSONAGENS.FirstOrDefaultAsync(a =>a.Id == id);
-              _context.TB_PERSONAGENS.Remove(aRemover);
+               Arma aRemover = await _context.TB_ARMAS.FirstOrDefaultAsync(a =>a.Id == id);
+              _context.TB_ARMAS.Remove(aRemover);
 
              int linhasAfetadas = await _context.SaveChangesAsync();
 

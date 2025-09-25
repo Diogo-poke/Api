@@ -21,6 +21,7 @@ namespace RpgApi.Data
 
      //prop
      public DbSet<Personagem> TB_PERSONAGENS { get; set; }
+     public DbSet<Arma> TB_ARMAS { get; set; }
         
      protected override void OnModelCreating(ModelBuilder modelBuilder)
      {
@@ -37,23 +38,12 @@ namespace RpgApi.Data
             new Personagem() { Id = 6, Nome = "Celeborn", PontosVida=100, Forca=21, Defesa=13, Inteligencia=34, Classe=ClasseEnum.Clerigo },
             new Personagem() { Id = 7, Nome = "Radagast", PontosVida=100, Forca=25, Defesa=11, Inteligencia=35, Classe=ClasseEnum.Mago }
         );
-
-     }
-     
-     protected override void ConfigureConventions(ModelConfigurationBuilder configurationBuilder)
-     {
-        configurationBuilder.Properties<string>().HaveColumnType("varchar").HaveMaxLength(200);
-     }
-
-      public DbSet<Arma> TB_ARMAS { get; set; }
         
-     protected override void OnModelCreating(ModelBuilder modelBuilder)
-     {
-        modelBuilder.Entity<Arma>().ToTable("TB_ARMAS");
+         modelBuilder.Entity<Arma>().ToTable("TB_ARMAS");
 
         modelBuilder.Entity<Arma>().HasData
         (
-       //Inserir as linhas "new Personagem() {id = 2,..."} da lista de Personagens
+       
         new Arma() { Id = 1, Nome = "Adaga", Dano = 25}, 
         new Arma() { Id = 2, Nome = "Cajado", Dano = 20},
         new Arma() { Id = 3, Nome = "Espada", Dano = 15},
@@ -62,8 +52,15 @@ namespace RpgApi.Data
         new Arma() { Id = 6, Nome = "Machado", Dano = 50},
         new Arma() { Id = 7, Nome = "Arco", Dano = 10}
         );
-
      }
+     
+     protected override void ConfigureConventions(ModelConfigurationBuilder configurationBuilder)
+     {
+        configurationBuilder.Properties<string>().HaveColumnType("varchar").HaveMaxLength(200);
+     }
+
+     
+        
      
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
